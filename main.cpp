@@ -1,8 +1,6 @@
 #include <iostream>
 #include <cstdint>
-
 #include <string>
-#include <vector>
 #include <unordered_map>
 
 #include "Bitmap.h"
@@ -10,6 +8,7 @@
 const uint32_t RED   = 0x000000FF;
 const uint32_t GREEN = 0x0000FF00;
 const uint32_t BLUE  = 0x00FF0000;
+
 
 int main(int argc, const char** argv)
 {
@@ -47,11 +46,11 @@ int main(int argc, const char** argv)
   else if(sceneId == 3)
     color = BLUE;
   
-  std::vector<uint32_t> image(512*512); 
+  std::vector<Pixel> image(512 * 512); 
   for(auto& pixel : image)
-    pixel = color;
+    pixel = Pixel(0, 123, 123);
 
-  SaveBMP(outFilePath.c_str(), image.data(), 512, 512);
+  SaveBMP(outFilePath.c_str(), image, 512, 512);
 
   std::cout << "end." << std::endl;
   return 0;
