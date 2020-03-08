@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 
 struct Pixel { 
@@ -27,7 +29,7 @@ struct Pixel {
         b = a3;
     }
     
-    Pixel& operator +=(Pixel& t) {
+    Pixel& operator +=(const Pixel& t) {
         if (r + t.r < 255) {
             r += t.r;
         } else {
@@ -46,7 +48,7 @@ struct Pixel {
         return *this;
     }
     
-    Pixel& operator -=(Pixel& t) {
+    Pixel& operator -=(const Pixel& t) {
         if (r - t.r > 0) {
             r -= t.r;
         } else {
@@ -65,7 +67,7 @@ struct Pixel {
         return *this;
     }
     
-    Pixel& operator *=(double& t) {
+    Pixel& operator *=(const double& t) {
         if (r * t < 255) {
             r *= t;
         } else {
@@ -84,19 +86,19 @@ struct Pixel {
         return *this;
     }
 
-    Pixel operator +(Pixel& t) {
+    Pixel operator +(const Pixel& t) const {
         return Pixel(r + t.r, g + t.g, b + t.b);
     }
     
-    Pixel operator -(Pixel& t) {
+    Pixel operator -(const Pixel& t) const {
         return Pixel(r - t.r, g - t.g, b - t.b);
     }
     
-    Pixel operator *(double& t) {
+    Pixel operator *(const double& t) const {
         return Pixel(r * t, g * t, b * t);
     }
     
 
 };
 
-extern void SaveBMP(const char* fname, std::vector<Pixel>& pixels, int w, int h);
+extern void SaveBMP(const char* fname, Pixel* pixels, int w, int h);

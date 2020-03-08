@@ -31,6 +31,6 @@ void WriteBMP(const char* fname, Pixel* a_pixelData, int width, int height) {
     out.close();
 }
 
-void SaveBMP(const char* fname, std::vector<Pixel>& pixels, int w, int h) {
-    WriteBMP(fname, &pixels[0], w, h);
+void SaveBMP(const char* fname, Pixel* pixels, int w, int h) {
+    WriteBMP(fname, pixels, w, h);
 }
