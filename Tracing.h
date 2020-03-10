@@ -54,16 +54,16 @@ struct Sphere {
 
     bool RayIntersect(const Coord& o, const Coord& d, double& t0) {
         Coord oc = o - c;
-        double b = 2 * (oc * d);
-        double c1 = (oc * oc) - r * r;
-        double disc = b * b - 4 * c1;
-        if (disc < 1e-4) {
+
+        double k1 = d * d;
+        double k2 = 2 * (oc * d);
+        double k3 = (oc * oc) - r * r;
+        double disc = k2 * k2 - 4 * k1 * k3;
+        if (disc < 0):
             return false;
-        }
-        disc = sqrt(disc);
-        double t1 = -b - disc;
-        double t2 = -b + disc;
-        t0 = (t1 < t2) ? t1 : t2;
+        double t1 = (-k2 + sqrt(disc)) / (2 * k1);
+        double t2 = (-k2 - sqrt(disc)) / (2 * k1);
+        
         return true;
     }
 };
@@ -75,7 +75,7 @@ struct Scene {
     Scene() {
         BG = Pixel(10, 10, 10);
         //sp.push_back(Sphere(Coord(128, 128, 3), 1, Pixel(255, 0, 0)));
-        sp.push_back(Sphere(Coord(w / 2., h / 2., -50), 50, Pixel(0, 255, 0)));
+        sp.push_back(Sphere(Coord(w / 2., h / 2., 50), 50, Pixel(0, 255, 0)));
         //sp.push_back(Sphere(Coord(312, 312, 4), 1, Pixel(0, 0, 255)));
     }
 };
