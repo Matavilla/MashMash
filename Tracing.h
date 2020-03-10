@@ -9,8 +9,8 @@
 
 
 const double inf = std::numeric_limits<double>::infinity();
-const int w = 500;
-const int h = 500;
+const int w = 600;
+const int h = 600;
 
 struct Coord{
     double x, y, z;
@@ -75,7 +75,7 @@ struct Scene {
     Scene() {
         BG = Pixel(10, 10, 10);
         //sp.push_back(Sphere(Coord(128, 128, 3), 1, Pixel(255, 0, 0)));
-        sp.push_back(Sphere(Coord(w / 2., h / 2., 50), 5, Pixel(0, 255, 0)));
+        sp.push_back(Sphere(Coord(w / 2., h / 2., -50), 50, Pixel(0, 255, 0)));
         //sp.push_back(Sphere(Coord(312, 312, 4), 1, Pixel(0, 0, 255)));
     }
 };
