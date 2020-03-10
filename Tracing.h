@@ -9,8 +9,6 @@
 
 
 const double inf = std::numeric_limits<double>::infinity();
-const int w = 600;
-const int h = 600;
 
 struct Coord{
     double x, y, z;
@@ -59,11 +57,20 @@ struct Sphere {
         double k2 = 2 * (oc * d);
         double k3 = (oc * oc) - r * r;
         double disc = k2 * k2 - 4 * k1 * k3;
-        if (disc < 0):
+        if (disc < 0) {
             return false;
+        }
         double t1 = (-k2 + sqrt(disc)) / (2 * k1);
         double t2 = (-k2 - sqrt(disc)) / (2 * k1);
-        
+        if (t1 > 1) {
+            t0 = t1;
+        }
+        if (t2 > 1 && t2 < t0) {
+            t0 = t2;
+        }
+        if (t0 == 0) {
+            t0 = inf;
+        }
         return true;
     }
 };
@@ -71,13 +78,17 @@ struct Sphere {
 struct Scene {
     std::vector<Sphere> sp;
     Pixel BG;
+    int w = 600;
+    int h = 600;
 
     Scene() {
         BG = Pixel(10, 10, 10);
-        //sp.push_back(Sphere(Coord(128, 128, 3), 1, Pixel(255, 0, 0)));
-        sp.push_back(Sphere(Coord(w / 2., h / 2., 50), 50, Pixel(0, 255, 0)));
-        //sp.push_back(Sphere(Coord(312, 312, 4), 1, Pixel(0, 0, 255)));
+        sp.push_back(Sphere(Coord(2, 0, 4), 1, Pixel(255, 0, 0)));
+        sp.push_back(Sphere(Coord(0, -1, 3), 1, Pixel(0, 255, 0)));
+        sp.push_back(Sphere(Coord(-2, 0, 4), 1, Pixel(0, 0, 255)));
     }
+    Coord ToRealCoord(const double& x, const double& y);
+
+    Pixel TraceRay(const Coord& d, const Coord& o);
 };
 
-extern Pixel TraceRay(Scene& s, const Coord& d, const Coord& o);
