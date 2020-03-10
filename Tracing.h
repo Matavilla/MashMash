@@ -31,9 +31,13 @@ struct Coord{
     Coord operator /(const double r) const{
         return Coord(x / r, y / r, z / r);
     }
+    
+    double len() const {
+        return sqrt(x * x + y * y + z * z);
+    }
+
     Coord normalize() const{
-        double n = sqrt(x * x + y * y + z * z);
-        return (*this) / n;
+        return (*this) / len();
     }
 
 };
@@ -43,10 +47,10 @@ struct Sphere {
     double r;
     Pixel color;
 
-    Sphere(Coord _c, double r1, Pixel _col) : c(_c), r(r1), color(_col) {
+    Sphere(Coord _c = Coord(), double r1 = 0., Pixel _col = Pixel()) : c(_c), r(r1), color(_col) {
     }
     
-    Coord getNormal(const Coord&p) const {
+    Coord getNormal(const Coord& p) const {
         return (p - c) / r;
     }
 
@@ -83,10 +87,10 @@ struct Light {
     };
 
     int Type;
-    int Intency;
+    double Intency;
     Coord c;
 
-    Light(const int& Typ, const int& Intenc, const Coord& _c = Coord()) : Type(Typ), Intency(Intenc), c(_c) {
+    Light(const int& Typ, const double& Intenc, const Coord& _c = Coord()) : Type(Typ), Intency(Intenc), c(_c) {
     }
 };
 
@@ -100,20 +104,22 @@ struct Scene {
     int h = 600;
 
     Scene() {
-        BG = Pixel(10, 10, 10);
+        BG = Pixel(255, 255, 255);
 
-        sp.push_back(Sphere(Coord(1, 0, 4), 1, Pixel(255, 0, 0)));
-        sp.push_back(Sphere(Coord(0, -1, 3), 1, Pixel(0, 255, 0)));
-        sp.push_back(Sphere(Coord(-2, 0, 4), 1, Pixel(0, 0, 255)));
-        sp.push_back(Sphere(Coord(0, -5001, 0), 5000, Pixel(0, 255, 255)));
+        sp.push_back(Sphere(Coord(2, 0, 4), 1, Pixel(128, 0, 0)));
+        sp.push_back(Sphere(Coord(0, -1, 3), 1, Pixel(140, 230, 240)));
+        sp.push_back(Sphere(Coord(-2, 0, 4), 1, Pixel(0, 69, 255)));
+        sp.push_back(Sphere(Coord(0, -5001, 0), 5000, Pixel(212, 255, 127)));
 
         
-        li.push_back(Light(Coord(1, 0, 4), 0.2));
-        li.push_back(Light(Coord(0, -1, 3), 0.6, Coord(0, 255, 0)));
-        li.push_back(Light(Coord(-2, 0, 4), 0.2, Coord(0, 0, 255)));
+        li.push_back(Light(Light::AMBIENT, 0.6));
+        li.push_back(Light(Light::POINT, 0.3, Coord(2, 3, 2)));
+        li.push_back(Light(Light::DIRECTIONAL, 0.2, Coord(2, 1, 0)));
     }
     Coord ToRealCoord(const double& x, const double& y);
 
     Pixel TraceRay(const Coord& d, const Coord& o);
+
+    double Lighting(const Coord& p, const Coord& n);
 };
 
