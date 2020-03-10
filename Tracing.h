@@ -75,17 +75,42 @@ struct Sphere {
     }
 };
 
+struct Light {
+    enum TYPE_LIGHT {
+        AMBIENT, 
+        POINT,
+        DIRECTIONAL
+    };
+
+    int Type;
+    int Intency;
+    Coord c;
+
+    Light(const int& Typ, const int& Intenc, const Coord& _c = Coord()) : Type(Typ), Intency(Intenc), c(_c) {
+    }
+};
+
 struct Scene {
     std::vector<Sphere> sp;
+    std::vector<Light> li;
+
+
     Pixel BG;
     int w = 600;
     int h = 600;
 
     Scene() {
         BG = Pixel(10, 10, 10);
-        sp.push_back(Sphere(Coord(2, 0, 4), 1, Pixel(255, 0, 0)));
+
+        sp.push_back(Sphere(Coord(1, 0, 4), 1, Pixel(255, 0, 0)));
         sp.push_back(Sphere(Coord(0, -1, 3), 1, Pixel(0, 255, 0)));
         sp.push_back(Sphere(Coord(-2, 0, 4), 1, Pixel(0, 0, 255)));
+        sp.push_back(Sphere(Coord(0, -5001, 0), 5000, Pixel(0, 255, 255)));
+
+        
+        li.push_back(Light(Coord(1, 0, 4), 0.2));
+        li.push_back(Light(Coord(0, -1, 3), 0.6, Coord(0, 255, 0)));
+        li.push_back(Light(Coord(-2, 0, 4), 0.2, Coord(0, 0, 255)));
     }
     Coord ToRealCoord(const double& x, const double& y);
 
