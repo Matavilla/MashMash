@@ -112,9 +112,9 @@ struct Scene {
         sp.push_back(Sphere(Coord(0, -5001, 0), 5000, Pixel(212, 255, 127)));
 
         
-        li.push_back(Light(Light::AMBIENT, 0.6));
-        li.push_back(Light(Light::POINT, 0.3, Coord(2, 3, 2)));
-        li.push_back(Light(Light::DIRECTIONAL, 0.2, Coord(2, 1, 0)));
+        li.push_back(Light(Light::AMBIENT, 0.2));
+        li.push_back(Light(Light::POINT, 0.6, Coord(2, 1, 0)));
+        li.push_back(Light(Light::DIRECTIONAL, 0.2, Coord(1, 4, 4)));
     }
     Coord ToRealCoord(const double& x, const double& y);
 

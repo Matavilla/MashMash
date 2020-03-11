@@ -10,7 +10,7 @@ Pixel Scene::TraceRay(const Coord& d, const Coord& o) {
     bool flag = false;
     double dist;
     for (auto& sph : sp) {
-        dist = 0;
+        double dist = 0;
         if (!sph.RayIntersect(o, d, dist)) {
             continue;
         }
@@ -23,7 +23,7 @@ Pixel Scene::TraceRay(const Coord& d, const Coord& o) {
     if (!flag) {
         return BG;
     }
-    Coord p = o + d * dist;
+    Coord p = o + d * tmp;
     return tmp_sp.color * Lighting(p, tmp_sp.getNormal(p));
 }
 
@@ -35,8 +35,8 @@ double Scene::Lighting(const Coord& p, const Coord& n) {
         } else {
             Coord L = l.c;
             if (l.Type == Light::POINT) {
-                L = L - p;
-            }
+                L = l.c - p;
+            } 
             if (n * L > 0) {
                 i += l.Intency * (n * L) / (n.len() * L.len());
             }
