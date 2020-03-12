@@ -46,8 +46,9 @@ struct Sphere {
     Coord c;
     double r;
     Pixel color;
+    int specular;
 
-    Sphere(Coord _c = Coord(), double r1 = 0., Pixel _col = Pixel()) : c(_c), r(r1), color(_col) {
+    Sphere(Coord _c = Coord(), double r1 = 0., Pixel _col = Pixel(), int _s = 0) : c(_c), r(r1), color(_col), specular(_s) {
     }
     
     Coord getNormal(const Coord& p) const {
@@ -106,10 +107,10 @@ struct Scene {
     Scene() {
         BG = Pixel(255, 255, 255);
 
-        sp.push_back(Sphere(Coord(2, 0, 4), 1, Pixel(128, 0, 0)));
-        sp.push_back(Sphere(Coord(0, -1, 3), 1, Pixel(140, 230, 240)));
-        sp.push_back(Sphere(Coord(-2, 0, 4), 1, Pixel(0, 69, 255)));
-        sp.push_back(Sphere(Coord(0, -5001, 0), 5000, Pixel(212, 255, 127)));
+        sp.push_back(Sphere(Coord(1.5, 1, 3), 1, Pixel(128, 0, 0), 500));
+        sp.push_back(Sphere(Coord(0, -1, 3), 1, Pixel(140, 230, 240), 500));
+        sp.push_back(Sphere(Coord(-1.5, 1, 3), 1, Pixel(0, 69, 255), 10));
+        sp.push_back(Sphere(Coord(0, -5001, 0), 5000, Pixel(212, 255, 127), 1000));
 
         
         li.push_back(Light(Light::AMBIENT, 0.2));
@@ -120,6 +121,6 @@ struct Scene {
 
     Pixel TraceRay(const Coord& d, const Coord& o);
 
-    double Lighting(const Coord& p, const Coord& n);
+    double Lighting(const Coord& p, const Coord& n, const Coord& v, const double s);
 };
 

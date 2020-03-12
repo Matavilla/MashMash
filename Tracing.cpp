@@ -24,10 +24,10 @@ Pixel Scene::TraceRay(const Coord& d, const Coord& o) {
         return BG;
     }
     Coord p = o + d * tmp;
-    return tmp_sp.color * Lighting(p, tmp_sp.getNormal(p));
+    return tmp_sp.color * Lighting(p, tmp_sp.getNormal(p), d * -1, tmp_sp.specular);
 }
 
-double Scene::Lighting(const Coord& p, const Coord& n) {
+double Scene::Lighting(const Coord& p, const Coord& n, const Coord& v, const double s) {
     double i = 0.;
     for (auto& l : li) {
         if (l.Type == Light::AMBIENT) {
@@ -39,6 +39,11 @@ double Scene::Lighting(const Coord& p, const Coord& n) {
             } 
             if (n * L > 0) {
                 i += l.Intency * (n * L) / (n.len() * L.len());
+            }
+
+            Coord r = n * 2 * (n * L) - L;
+            if (r * v > 0) {
+                i += l.Intency * std::pow((r * v) / (r.len() * v.len()) , s);
             }
         }
     }
