@@ -4,46 +4,79 @@ Coord Scene::ToRealCoord(const double& x, const double& y) {
     return Coord((x - w / 2) / (double) (w / 2), (y - h / 2) / (double) (h / 2), 1);
 }
 
-Pixel Scene::TraceRay(const Coord& d, const Coord& o) {
-    double tmp = std::numeric_limits<double>::max();
-    Sphere tmp_sp;
+Coord ReflectRay(const Coord R, const Coord& N) {
+    return (N * (2 * (N * R))) - R;
+}
+
+bool Scene::ClosestIntersection(Sphere& tmp_sp, double& tmp, Coord O, Coord D, double t_min, double t_max) {
+    tmp = inf;
     bool flag = false;
-    double dist;
-    for (auto& sph : sp) {
-        double dist = 0;
-        if (!sph.RayIntersect(o, d, dist)) {
-            continue;
+    for (auto &sph : sp) {
+        auto i = sph.RayIntersect(O, D);
+        if (i.first < tmp && t_min < i.first && t_max > i.first) {
+            tmp = i.first;
+            flag = true;
+            tmp_sp = sph;
         }
-        if (dist < tmp) {
-            tmp = dist;
+        if (i.second < tmp && t_min < i.second && t_max > i.second) {
+            tmp = i.second;
             tmp_sp = sph;
             flag = true;
         }
     }
-    if (!flag) {
-        return BG;
-    }
-    Coord p = o + d * tmp;
-    return tmp_sp.color * Lighting(p, tmp_sp.getNormal(p), d * -1, tmp_sp.specular);
+    return flag;
 }
 
-double Scene::Lighting(const Coord& p, const Coord& n, const Coord& v, const double s) {
+Pixel Scene::TraceRay(Coord O, Coord D, double t_min, double t_max, int depth) {
+    Sphere tmp_sp;
+    double tmp;
+    
+    if (!ClosestIntersection(tmp_sp, tmp, O, D, t_min, t_max)) {
+        return BG;
+    }
+        
+    Coord P = O + D * tmp;
+    Coord N = tmp_sp.GetNormal(P);
+    Pixel local_color = tmp_sp.color * Lighting(P, N, -D, tmp_sp.specular);
+
+    if (depth <= 0 || tmp_sp.reflective <= 0)
+        return local_color;
+
+    Coord R = ReflectRay(-D, N);
+    Pixel reflected_color = TraceRay(P, R, 0.001, inf, depth - 1);
+    
+    return local_color * (1. - tmp_sp.reflective) + reflected_color * tmp_sp.reflective;
+}
+
+double Scene::Lighting(Coord P, Coord N, Coord V, double s) {
     double i = 0.;
     for (auto& l : li) {
         if (l.Type == Light::AMBIENT) {
             i += l.Intency;
         } else {
+            double tmp = inf;
             Coord L = l.c;
             if (l.Type == Light::POINT) {
-                L = l.c - p;
-            } 
-            if (n * L > 0) {
-                i += l.Intency * (n * L) / (n.len() * L.len());
+                L = l.c - P;
+                tmp = 1.;
             }
 
-            Coord r = n * 2 * (n * L) - L;
-            if (r * v > 0) {
-                i += l.Intency * std::pow((r * v) / (r.len() * v.len()) , s);
+            Sphere tmp_sp;
+            double dist;
+
+            if (ClosestIntersection(tmp_sp, dist, P, L, 0.001, tmp)) {
+                continue;
+            }
+
+            if (N * L > 0) {
+                i += l.Intency * (N * L) / (N.len() * L.len());
+            }
+            
+            if (s != -1) {
+                Coord R = ReflectRay(L, N);
+                if (R * V > 0) {
+                    i += l.Intency * std::pow((R * V) / (R.len() * V.len()) , s);
+                }
             }
         }
     }

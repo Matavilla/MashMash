@@ -42,7 +42,7 @@ int main(int argc, const char** argv) {
     Pixel image[s.w * s.h]; 
     for (int y = 0; y < s.h; y++) {
         for (int x = 0; x < s.w; x++) {
-            image[y * s.w + x]  = s.TraceRay(s.ToRealCoord(x, y), Coord(0, 0, 0));
+            image[y * s.w + x]  = s.TraceRay(Coord(0, 0, 0), s.ToRealCoord(x, y), 1, inf);
         }
     }
 
