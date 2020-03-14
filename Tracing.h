@@ -4,6 +4,7 @@
 #include <limits>
 #include <cmath>
 #include <iostream>
+#include <ctime>
 
 #include "Bitmap.h"
 
@@ -103,7 +104,6 @@ struct Scene {
     std::vector<Sphere> sp;
     std::vector<Light> li;
 
-
     Pixel BG;
     int w = 800;
     int h = 800;
@@ -113,10 +113,10 @@ struct Scene {
 
         sp.push_back(Sphere(Coord(2, 0, 4), 1, Pixel(133, 21, 199), 500, 0.3));
         sp.push_back(Sphere(Coord(0, -1, 3), 1, Pixel(238, 104, 123), 50, 0));
-        sp.push_back(Sphere(Coord(-2, 0, 4), 1, Pixel(47, 255, 173), 10, 0.9));
+        sp.push_back(Sphere(Coord(-2, 0, 4), 1, Pixel(47, 255, 173), 100, 0.9));
         sp.push_back(Sphere(Coord(0, -5001, 0), 5000, Pixel(192, 192, 192), 1000, 0.05));
+        sp.push_back(Sphere(Coord(130, 140, 180), 12, Pixel(225, 228, 255), 2000, 0.04));
 
-        
         li.push_back(Light(Light::AMBIENT, 0.1));
         li.push_back(Light(Light::POINT, 0.8, Coord(2, 1, 0)));
         li.push_back(Light(Light::DIRECTIONAL, 0.1, Coord(1, 4, 4)));
