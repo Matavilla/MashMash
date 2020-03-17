@@ -9,11 +9,11 @@
 int main(int argc, const char** argv) {
     std::unordered_map<std::string, std::string> cmdLineParams;
 
-    for(int i=0; i<argc; i++) {
+    for (int i=0; i<argc; i++) {
         std::string key(argv[i]);
 
-        if(key.size() > 0 && key[0]=='-') {
-            if(i != argc-1) {
+        if (key.size() > 0 && key[0]=='-') {
+            if (i != argc-1) {
                 cmdLineParams[key] = argv[i+1];
                 i++;
             } else { 
@@ -23,7 +23,7 @@ int main(int argc, const char** argv) {
     }
 
     std::string outFilePath = "zout.bmp";
-    if(cmdLineParams.find("-out") != cmdLineParams.end())
+    if (cmdLineParams.find("-out") != cmdLineParams.end())
         outFilePath = cmdLineParams["-out"];
 
     //int sceneId = 0;
@@ -39,15 +39,15 @@ int main(int argc, const char** argv) {
         //color = BLUE;
   
     Scene s;
-    Pixel image[w * h]; 
-    for (int y = 0; y < h; y++) {
-        for(int x = 0; x < w; x++) {
-            image[y * w + x]  = TraceRay(s, Coord(0, 0, 1), Coord(x, y, 0));
+    Pixel image[s.w * s.h]; 
+    for (int y = 0; y < s.h; y++) {
+        for (int x = 0; x < s.w; x++) {
+            image[y * s.w + x]  = s.TraceRay(Coord(0, 0, 0), s.ToRealCoord(x, y), 1, inf);
         }
     }
 
 
-    SaveBMP(outFilePath.c_str(), image, w, h);
+    SaveBMP(outFilePath.c_str(), image, s.w, s.h);
 
     std::cout << "end." << std::endl;
     return 0;
