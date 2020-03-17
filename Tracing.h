@@ -164,23 +164,23 @@ struct Scene {
     std::vector<Light> li;
 
     Pixel BG;
-    int w = 700;
-    int h = 700;
+    int w = 1024;
+    int h = 1024;
 
     Scene() {
-        BG  = Pixel(0, 0, 0);
+        BG  = Pixel(114, 128, 250);
 
-        sp.emplace_back(new Sphere(Coord(2, 0, 5), 1, Pixel(133, 21, 199), 500, 0.3));
-        sp.emplace_back(new Sphere(Coord(0, -1, 4), 1, Pixel(238, 104, 123), 50, 0));
-        sp.emplace_back(new Sphere(Coord(-2, 0, 5), 1, Pixel(47, 255, 173), 100, 0.9));
-        sp.emplace_back(new Sphere(Coord(0, -5001, 0), 5000, Pixel(192, 192, 192), 1000, 0.05));
+        sp.emplace_back(new Sphere(Coord(-3, 1, 4), 1, Pixel(133, 21, 199), 500, 0.3));
+        sp.emplace_back(new Sphere(Coord(-1, 1, 5.5), 1, Pixel(238, 104, 123), 50, 0));
+        sp.emplace_back(new Sphere(Coord(3, 1, 5), 1, Pixel(47, 255, 173), 100, 0.9));
+        sp.emplace_back(new Sphere(Coord(0, -5001, 0), 5000, Pixel(181, 228, 255), 1000, 0.05));
         sp.emplace_back(new Sphere(Coord(130, 140, 180), 12, Pixel(225, 228, 255), 2000, 0.04));
 
 
-        sp.emplace_back(new Triangle(Coord(2, 0.5, 3), Coord(0, 2, 2.5), Coord(-2, 0.5, 3), Pixel(255, 255, 12), 100, 0.02));
-        sp.emplace_back(new Triangle(Coord(0, 0, 2), Coord(2, 0.5, 3), Coord(-2, 0.5, 3), Pixel(255, 45, 123), 100, 0.02));
-        sp.emplace_back(new Triangle(Coord(0, 0, 2), Coord(-2, 0.5, 3), Coord(0, 2, 2.5), Pixel(9201, 131, 255), 100, 0.02));
-        sp.emplace_back(new Triangle(Coord(2, 0.5, 3), Coord(0, 0, 2), Coord(0, 2, 2.5), Pixel(56, 123, 12), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(2, -1, 4), Coord(0, 1, 3), Coord(-2, -1, 4), Pixel(107, 183, 189), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(0, -1, 2), Coord(2, -1, 4), Coord(-2, -1, 4), Pixel(185, 218, 255), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(0, -1, 2), Coord(-2, -1, 4), Coord(0, 1, 3), Pixel(238, 130, 238), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(2, -1, 4), Coord(0, -1, 2), Coord(0, 1, 3), Pixel(128, 128, 0), 100, 0.02));
 
         li.push_back(Light(Light::AMBIENT, 0.2));
         li.push_back(Light(Light::POINT, 0.6, Coord(2, 1, 0)));
