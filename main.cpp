@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <string>
 #include <unordered_map>
+#include <omp.h>
 
 #include "Bitmap.h"
 #include "Tracing.h"
@@ -40,6 +41,8 @@ int main(int argc, const char** argv) {
   
     Scene s;
     Pixel image[s.w * s.h]; 
+
+#pragma omp parallel for
     for (int y = 0; y < s.h; y++) {
         for (int x = 0; x < s.w; x++) {
             image[y * s.w + x]  = s.TraceRay(Coord(0, 0, 0), s.ToRealCoord(x, y), 1, inf);
