@@ -27,29 +27,35 @@ int main(int argc, const char** argv) {
     if (cmdLineParams.find("-out") != cmdLineParams.end())
         outFilePath = cmdLineParams["-out"];
 
-    //int sceneId = 0;
-    //if(cmdLineParams.find("-scene") != cmdLineParams.end())
-        //sceneId = atoi(cmdLineParams["-scene"].c_str());
+    int numThreads = 1;
+    if (cmdLineParams.find("-threads") != cmdLineParams.end())
+        numThreads = stoi(cmdLineParams["-threads"]);
+    omp_set_num_threads(numThreads);
 
-    //uint32_t color = 0;
-    //if(sceneId == 1)
-        //color = RED;
-    //else if(sceneId == 2)
-        //color = RED | GREEN;
-    //else if(sceneId == 3)
-        //color = BLUE;
-  
+    bool flag = false;
+    if (cmdLineParams.find("-simd") != cmdLineParams.end() && cmdLineParams["-simd"] == "1")
+        flag = true;
+    
+
     Scene s;
-    Pixel image[s.w * s.h]; 
+    Pixel image[s.w * s.h];
 
+    if (flag) {
 #pragma omp parallel for
-    for (int y = 0; y < s.h; y++) {
-        for (int x = 0; x < s.w; x++) {
-            image[y * s.w + x]  = s.TraceRay(Coord(0, 0, 0), s.ToRealCoord(x, y), 1, inf);
+        for (int y = 0; y < s.h; y++) {
+#pragma omp simd
+            for (int x = 0; x < s.w; x++) {
+                image[y * s.w + x]  = s.TraceRay(Coord(0, 0, 0), s.ToRealCoord(x, y), 1, inf);
+            }
+        }
+    } else {
+#pragma omp parallel for
+        for (int y = 0; y < s.h; y++) {
+            for (int x = 0; x < s.w; x++) {
+                image[y * s.w + x]  = s.TraceRay(Coord(0, 0, 0), s.ToRealCoord(x, y), 1, inf);
+            }
         }
     }
-
-
     SaveBMP(outFilePath.c_str(), image, s.w, s.h);
 
     std::cout << "end." << std::endl;

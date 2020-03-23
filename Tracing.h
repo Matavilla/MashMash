@@ -168,7 +168,7 @@ struct Scene {
     int h = 1024;
 
     Scene() {
-        BG  = Pixel(114, 128, 250);
+        BG  = Pixel(209, 206, 0);
 
         sp.emplace_back(new Sphere(Coord(-3, 1, 4), 1, Pixel(133, 21, 199), 500, 0.3));
         sp.emplace_back(new Sphere(Coord(-1, 1, 5.5), 1, Pixel(238, 104, 123), 50, 0));
@@ -177,10 +177,10 @@ struct Scene {
         sp.emplace_back(new Sphere(Coord(130, 140, 180), 12, Pixel(225, 228, 255), 2000, 0.04));
 
 
-        sp.emplace_back(new Triangle(Coord(2, -1, 4), Coord(0, 1, 3), Coord(-2, -1, 4), Pixel(107, 183, 189), 100, 0.02));
-        sp.emplace_back(new Triangle(Coord(0, -1, 2), Coord(2, -1, 4), Coord(-2, -1, 4), Pixel(185, 218, 255), 100, 0.02));
-        sp.emplace_back(new Triangle(Coord(0, -1, 2), Coord(-2, -1, 4), Coord(0, 1, 3), Pixel(238, 130, 238), 100, 0.02));
-        sp.emplace_back(new Triangle(Coord(2, -1, 4), Coord(0, -1, 2), Coord(0, 1, 3), Pixel(128, 128, 0), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(2, -1, 4), Coord(0, 1, 3), Coord(-2, -1, 4), Pixel(0, 105, 255), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(0, -1, 2), Coord(2, -1, 4), Coord(-2, -1, 4), Pixel(78, 184, 137), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(0, -1, 2), Coord(-2, -1, 4), Coord(0, 1, 3), Pixel(145, 47, 56), 100, 0.02));
+        sp.emplace_back(new Triangle(Coord(2, -1, 4), Coord(0, -1, 2), Coord(0, 1, 3), Pixel(100, 145, 13), 100, 0.02));
 
         li.push_back(Light(Light::AMBIENT, 0.2));
         li.push_back(Light(Light::POINT, 0.6, Coord(2, 1, 0)));
